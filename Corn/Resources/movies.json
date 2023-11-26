@@ -1,0 +1,45 @@
+[
+  {
+    "id": 1,
+    "title": "Avatar",
+    "year": 2009,
+    "description": "A paraplegic marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.",
+    "poster": "http://ia.media-imdb.com/images/M/MV5BMTYwOTEwNjAzMl5BMl5BanBnXkFtZTcwODc5MTUwMw@@._V1_SX300.jpg"
+  },
+  {
+    "id": 2,
+    "title": "The Shawshank Redemption",
+    "year": 1994,
+    "description": "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
+    "poster": "http://ia.media-imdb.com/images/M/MV5BMjEyOTYyMzUxNl5BMl5BanBnXkFtZTcwNTg0MTUzNA@@._V1_SX300.jpg"
+  },
+  {
+    "id": 3,
+    "title": "The Godfather",
+    "year": 1972,
+    "description": "An organized crime dynasty's aging patriarch transfers control of his clandestine empire to his reluctant son.",
+    "poster": "http://ia.media-imdb.com/images/M/MV5BMzAwMDM5OTgxNjZeQTJeQWpwZ15BbWU4MDUxNDYxODEx._V1_SX300.jpg"
+  },
+  {
+      "id": 4,
+      "title": "The Dark Knight",
+      "year": 2008,
+      "description": "When the menace known as The Joker emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham.",
+      "poster": "http://ia.media-imdb.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAxNDUwMw@@._V1_SX300.jpg"
+    },
+    {
+      "id": 5,
+      "title": "Pulp Fiction",
+      "year": 1994,
+      "description": "The lives of two mob hitmen, a boxer, a gangster's wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
+      "poster": "http://ia.media-imdb.com/images/M/MV5BMTkxNjA1OTA0MF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SX300.jpg"
+    },
+    {
+      "id": 6,
+      "title": "Inception",
+      "year": 2010,
+      "description": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
+      "poster": "http://ia.media-imdb.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg"
+    },
+]
+
