@@ -7,29 +7,23 @@
 
 import SwiftUI
 
-
-
 struct Swiper: View {
     
     
     
     @EnvironmentObject var movieViewModel: MovieViewModel
     @State private var hasLoadedData = false
-
+    
     
     var body: some View {
         VStack {
             ZStack {
-                
-                
-                
-                ForEach(movieViewModel.movies) { movie in
-                    CardView(movie: movie)
-                }
-                
-                SwiperEnd()
-                    .zIndex(-1)
-              
+                    ForEach(movieViewModel.movies) { movie in
+                        CardView(movie: movie)
+                    }
+                    
+                    SwiperEnd()
+                        .zIndex(-1)
             }
             
         }

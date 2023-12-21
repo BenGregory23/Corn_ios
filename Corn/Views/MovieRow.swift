@@ -17,70 +17,17 @@ struct MovieRow: View {
             showingMovieDetail.toggle()
         } label: {
             
-                
-                AsyncImage(url: URL(string: AppConfig.tmdbImageURL + "/" + movie.poster)) { phase in
-                    switch phase {
-                    case .empty:
-                        HStack{
-                            
-                      
-                            
-                            // Placeholder view, you can use any view here
-                            Image("Neutral")
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 100.0, height: 100.0)
-                                .clipShape(RoundedRectangle(cornerRadius: 10.0))
-                                .overlay{
-                                    RoundedRectangle(cornerRadius: 10.0).stroke(.gray,lineWidth: 1)
-                                }
-                                .shadow(radius: 7)
-                            
-                            VStack(alignment: .leading){
-                                Text(movie.title)
-                                    .bold()
-                                    .font(.title3)
-                                    .foregroundColor(.white)
-                                Text(String(movie.releaseDate ?? 0000))
-                                    .foregroundColor(.white)
-                                
-                            }.padding()
-                        }
-                    case .success(let image):
-                        HStack{
-                            
-                      
-                            
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 100.0, height: 100.0)
-                                .clipShape(RoundedRectangle(cornerRadius: 10.0))
-                                .overlay{
-                                    RoundedRectangle(cornerRadius: 10.0).stroke(.gray,lineWidth: 1)
-                                }
-                                .shadow(radius: 7)
-                            
-                            VStack(alignment: .leading){
-                                Text(movie.title)
-                                    .bold()
-                                    .font(.title3)
-                                    .foregroundColor(.white)
-                                Text(String(movie.releaseDate ?? 0000))
-                                    .foregroundColor(.white)
-                                
-                            }.padding()
-                        }
-                     
-                        
-                    case .failure:
-                        // Placeholder view, you can use any view here
-                        Image("Neutral")
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 100.0, height: 100.0)
-                            .clipShape(RoundedRectangle(cornerRadius: 10.0))
+            
+            AsyncImage(url: URL(string: AppConfig.tmdbImageURL + "/" + movie.poster)) { phase in
+                switch phase {
+                case .empty:
+                    HStack{
+                        Image(systemName: "photo")
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 80.0, height: 100.0)
+                            .clipShape(RoundedRectangle(cornerRadius: 8.0))
                             .overlay{
-                                RoundedRectangle(cornerRadius: 10.0).stroke(.gray,lineWidth: 1)
+                                RoundedRectangle(cornerRadius: 9.0).stroke(.gray,lineWidth: 1)
                             }
                             .shadow(radius: 7)
                         
@@ -93,15 +40,16 @@ struct MovieRow: View {
                                 .foregroundColor(.white)
                             
                         }.padding()
-                    @unknown default:
-                        // Placeholder view, you can use any view here
-                        Image("movie")
+                    }
+                case .success(let image):
+                    HStack{
+                        image
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 100.0, height: 100.0)
-                            .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                            .frame(width: 80.0, height: 100.0)
+                            .clipShape(RoundedRectangle(cornerRadius: 8.0))
                             .overlay{
-                                RoundedRectangle(cornerRadius: 10.0).stroke(.gray,lineWidth: 1)
+                                RoundedRectangle(cornerRadius: 8.0).stroke(.gray,lineWidth: 1)
                             }
                             .shadow(radius: 7)
                         
@@ -117,8 +65,52 @@ struct MovieRow: View {
                     }
                     
                     
-                 
+                case .failure:
+                    // Placeholder view, you can use any view here
+                    Image("Neutral")
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 80.0, height: 100.0)
+                        .clipShape(RoundedRectangle(cornerRadius: 8.0))
+                        .overlay{
+                            RoundedRectangle(cornerRadius: 8.0).stroke(.gray,lineWidth: 1)
+                        }
+                        .shadow(radius: 7)
                     
+                    VStack(alignment: .leading){
+                        Text(movie.title)
+                            .bold()
+                            .font(.title3)
+                            .foregroundColor(.white)
+                        Text(String(movie.releaseDate ?? 0000))
+                            .foregroundColor(.white)
+                        
+                    }.padding()
+                @unknown default:
+                    // Placeholder view, you can use any view here
+                    Image("movie")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 100.0, height: 100.0)
+                        .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                        .overlay{
+                            RoundedRectangle(cornerRadius: 10.0).stroke(.gray,lineWidth: 1)
+                        }
+                        .shadow(radius: 7)
+                    
+                    VStack(alignment: .leading){
+                        Text(movie.title)
+                            .bold()
+                            .font(.title3)
+                            .foregroundColor(.white)
+                        Text(String(movie.releaseDate ?? 0000))
+                            .foregroundColor(.white)
+                        
+                    }.padding()
+                }
+                
+                
+                
+                
                 
                 
             }.sheet(isPresented: $showingMovieDetail) {

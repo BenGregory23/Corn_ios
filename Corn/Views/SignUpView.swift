@@ -15,15 +15,22 @@ struct SignUpView: View {
     @State private var showErrorAlert = false
     @State private var errorAlertMessage = ""
     @State private var showLogInView = false
-    
-    
+    @State private var loading = false
     
     
     var body: some View {
         VStack{
-            Text("Sign Up")
-                .font(.largeTitle)
-                .bold()
+            VStack(spacing: 15){
+                
+                Text("Sign Up")
+                    .font(.custom("ElodyFreeRegular", size: 50))
+                    .bold()
+                
+                ViewThatFits(in: /*@START_MENU_TOKEN@*/.horizontal/*@END_MENU_TOKEN@*/) {
+                    LottieView(name: "speaker", loopMode: .loop, contentMode: .scaleAspectFit)
+                }.frame(height: 200)
+            }
+            
             Form {
                 
                 TextField("Username", text: $username)
@@ -38,16 +45,25 @@ struct SignUpView: View {
                     .textContentType(.password)
                 
             }
-            .frame(height: 300)
+            .frame(width: 350, height: 300)
+            .scrollDisabled(true)
             
             VStack(spacing: 10){
                 
                 Button {
                     signUp()
                 } label: {
-                    Text("Sign Up")
-                        .font(.system(size: 20))
-                        .frame(width: 225, height: 30)
+                    if(loading){
+                        ProgressView(value: /*@START_MENU_TOKEN@*/0.5/*@END_MENU_TOKEN@*/).progressViewStyle(.circular).tint(.black)
+                            .font(.system(size: 20))
+                            .frame(width: 225, height: 30)
+                    }
+                    else{
+                        Text("Sign up")
+                            .font(.system(size: 20))
+                            .frame(width: 225, height: 30)
+                        
+                    }
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.white)
@@ -56,10 +72,14 @@ struct SignUpView: View {
                 
                 // Link to video to finish this
                 // https://www.youtube.com/watch?v=O2FVDzoAB34
-                /*SignInWithAppleButton(.signUp, onRequest: configure, onCompletion: handle)
-                 .frame(width: 250, height: 45)
-                 .tint(.white)
-                 .signInWithAppleButtonStyle(.white)*/
+                /*
+                     SignInWithAppleButton(.signUp, onRequest: configure, onCompletion: handle)
+                     .frame(width: 250, height: 45)
+                     .tint(.white)
+                     .signInWithAppleButtonStyle(.white)
+                 */
+                
+                
             }
             
             HStack {
@@ -67,8 +87,6 @@ struct SignUpView: View {
                 NavigationLink(destination: LogInView()) {
                     Text("Log In")
                 }
-                
-              
             }
             
         }.alert(isPresented: $showErrorAlert) {
@@ -80,6 +98,16 @@ struct SignUpView: View {
     }
     
     private func signUp() {
+        
+        if(self.email == "" || self.password == "" || self.username == ""){
+            self.errorAlertMessage = "Please enter the necessary informations.";
+            self.showErrorAlert = true;
+            return
+        }
+        
+        self.loading = true
+        
+        
         guard let url = URL(string: AppConfig.backendURL + "/register") else {
             return
         }

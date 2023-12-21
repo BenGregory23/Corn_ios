@@ -10,12 +10,10 @@
 import SwiftUI
 
 class AuthenticationManager: ObservableObject {
-    @Published var isAuthenticated: Bool = false
-    
+    @AppStorage("isUserConnected") var isAuthenticated: Bool = false
+
+    // You can keep the setAuthenticated method if you need additional logic
     func setAuthenticated(_ value: Bool) {
-        DispatchQueue.main.async {
-            self.isAuthenticated = value
-        }
+        isAuthenticated = value
     }
 }
-

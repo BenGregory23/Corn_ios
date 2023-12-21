@@ -13,6 +13,8 @@ class UserViewModel: ObservableObject {
     @Published var id: String = ""
     @Published var email: String = ""
     @Published var username: String = ""
+    @Published var token: String = ""
+    @Published var networkErrors : NetworkErrors = NetworkErrors(moviesError: false, friendsError: false)
     
     func setId(id: String){
         DispatchQueue.main.async {
@@ -25,35 +27,44 @@ class UserViewModel: ObservableObject {
         DispatchQueue.main.async {
             self.email = email
         }
- 
+        
     }
     
     func setUsername(username: String){
         DispatchQueue.main.async {
             self.username = username
         }
-       
+        
+    }
+    
+    func setToken(token: String){
+        self.token = token
+    }
+    
+    func setUserInformationFromUserDefaults() {
+        if let userEmail = UserDefaults.standard.string(forKey: "userEmail"),
+           let userId = UserDefaults.standard.string(forKey: "userId"),
+           let username = UserDefaults.standard.string(forKey: "username"),
+           let token = UserDefaults.standard.string(forKey: "token"){
+          
+            DispatchQueue.main.async {
+                self.setId(id: userId)
+                self.setEmail(email: userEmail)
+                self.setUsername(username: username)
+                self.setToken(token: token)
+            }
+           
+        }
     }
     
     func fetchUserMovies() {
-    
-        ApiService.shared.fetchMovies(forUserId: self.id) { result in
-            
-            // Check if self.id is not null or empty
-            if !self.id.isEmpty {
-                if let storedUserId = UserDefaults.standard.string(forKey: "userId"), !storedUserId.isEmpty {
-                    // Use the user ID from UserDefaults
-                    DispatchQueue.main.async {
-                        self.id = storedUserId
-                    }
-                    
-                } else {
-                    print("Error: User ID is empty.")
-                    return
-                }
-            }
-            
-            
+        DispatchQueue.main.async {
+            self.networkErrors.moviesError = false
+        }
+      
+        
+        ApiService.shared.fetchMovies(forUserId: UserDefaults.standard.string(forKey: "userId") ?? "") { result in
+           
             var fetchedMovies: [Movie]
             switch result {
             case .success(let movies):
@@ -66,13 +77,21 @@ class UserViewModel: ObservableObject {
             case .failure(let error):
                 // Handle the error
                 print("Error fetching user movies: \(error)")
+                DispatchQueue.main.async {
+                    self.networkErrors.moviesError = true
+                }
+              
             }
         }
     }
     
     
     func fetchUserFriends(){
-        ApiService.shared.fetchFriends(forUserId: self.id) { result in
+        DispatchQueue.main.async {
+            self.networkErrors.friendsError = false
+        }
+        
+        ApiService.shared.fetchFriends(forUserId: UserDefaults.standard.string(forKey: "userId") ?? "") { result in
             switch result {
             case .success(let friends):
                 DispatchQueue.main.async {
@@ -82,12 +101,15 @@ class UserViewModel: ObservableObject {
             case .failure(let error):
                 // Handle the error
                 print("Error fetching movies: \(error)")
+                DispatchQueue.main.async {
+                    self.networkErrors.friendsError = true
+                }
             }
         }
     }
     
     func addMovie(movie:Movie){
-        ApiService.shared.addMovieToUser(forUserId: self.id, movie: movie) { result in
+        ApiService.shared.addMovieToUser(forUserId: UserDefaults.standard.string(forKey: "userId") ?? "", movie: movie) { result in
             switch result {
             case .success(_ ):
                 DispatchQueue.main.async {
@@ -102,14 +124,14 @@ class UserViewModel: ObservableObject {
     
     func removeMovie(movie: Movie) {
         movies.removeAll { $0.id == movie.id }
-
-        ApiService.shared.removeMovieFromUser(forUserId: self.id, movie: movie) { result in
+        
+        ApiService.shared.removeMovieFromUser(forUserId: UserDefaults.standard.string(forKey: "userId") ?? "", movie: movie) { result in
             switch result {
             case .success:
                 // Handle success if needed
                 DispatchQueue.main.async{
-                    print("success")
-                    self.fetchUserMovies()
+                  
+                   // self.fetchUserMovies()
                 }
                 break
             case .failure(let error):
@@ -118,22 +140,25 @@ class UserViewModel: ObservableObject {
             }
         }
     }
-
     
-    func addFriend(friendUsername: String){
+   
+    
+    func addFriend(friendUsername: String, completion: @escaping (Bool) -> Void) {
         ApiService.shared.addFriend(forUserId: self.id, friendUsername: friendUsername) { result in
             switch result {
             case .success(_ ):
                 DispatchQueue.main.async {
-                                    self.fetchUserMovies()
+                    self.fetchUserFriends()
+                    completion(true)
                 }
             case .failure(let error):
                 // Handle the error
                 print("Error adding friend: \(error)")
+                completion(false)
             }
         }
-        
     }
+
     
     func removeFriend(friend:Friend){
         ApiService.shared.removeFriend(forUserId: self.id, friend: friend) { result in
@@ -162,6 +187,44 @@ class UserViewModel: ObservableObject {
                 completion(.failure(error))
             }
         }
+    }
+    
+    
+    func setProfilePicture( profilePictureString: String, completion: @escaping (Result<Bool, Error>) -> Void){
+        ApiService.shared.setProfilePicture(profilePictureString: profilePictureString) { result in
+            switch result {
+            case .success(_):
+                completion(.success(true))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    
+    func proposeMovie(movie: Movie, forFriendId: String, completion: @escaping (Result<Bool, Error>) -> Void){
+        ApiServiceNotifications.shared.proposeMovieNotification(forFriendId: forFriendId, fromUserId: self.id, movieName: movie.title){ result in
+            switch result {
+            case .success(_):
+                completion(.success(true))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    
+    func reloadData(){
+        DispatchQueue.main.async {
+            self.fetchUserFriends()
+            self.fetchUserMovies()
+        }
+    }
+    
+    
+    struct NetworkErrors {
+        var moviesError: Bool
+        var friendsError: Bool
     }
     
     

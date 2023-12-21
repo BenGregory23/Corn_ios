@@ -19,13 +19,28 @@ struct FriendsList: View {
             if userViewModel.friends.isEmpty {
               
                 VStack(spacing: 5){
-                        LottieView(name:"microphone")
+                      
                     VStack{
-                        Text("It's quiet here.")
-                            .bold()
-                            .font(.title2)
-                        Text("Add some friends!")
-                            .font(.subheadline)
+                       
+                        
+                        
+                        if(userViewModel.networkErrors.friendsError){
+                            Text("There was an error.")
+                                .bold()
+                                .font(.title2)
+                            Text("Check your internet connection.")
+                            
+                            Button("Retry") {
+                                userViewModel.reloadData()
+                            }
+                        }else{
+                            LottieView(name:"microphone")
+                            Text("It's quiet here.")
+                                .bold()
+                                .font(.title2)
+                            Text("Add some friends!")
+                                .font(.subheadline)
+                        }
                         
                         
                        
@@ -57,6 +72,9 @@ struct FriendsList: View {
                     }
                 }
                 .navigationTitle("Friends")
+                .refreshable {
+                    userViewModel.fetchUserFriends()
+                }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {

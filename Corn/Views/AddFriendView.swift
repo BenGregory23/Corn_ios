@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AddFriendView: View {
     @State var username = ""
+    @State var isSuccess = false
     @EnvironmentObject var userViewModel: UserViewModel
     
     var body: some View {
@@ -19,6 +20,7 @@ struct AddFriendView: View {
             }.frame(height: 200)
             
             VStack(alignment: .leading) {
+                
                 Form {
                     Section(header: Text("Add Friend")){
                         HStack{
@@ -34,12 +36,36 @@ struct AddFriendView: View {
             }
         }.padding(.top, 30)
         
+        
+        
+        
+        
         Button(action: {
-            self.userViewModel.addFriend(friendUsername: username)
+            // self.userViewModel.addFriend(friendUsername: username)
+            
+            self.userViewModel.addFriend(friendUsername: username) { value in
+                isSuccess = value
+            }
         }){
-            Text("Add")
-                .font(.title3)
-                .frame(width: 100.0)
+            if(isSuccess){
+                Text("Friend added")
+                    .font(.title3)
+                    .frame(width: 200.0, height: 35)
+                    .onAppear {
+                        withAnimation {
+                            // Set isSuccess back to false after 2 seconds
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                isSuccess = false
+                            }
+                        }
+                    }
+            }
+            else {
+                Text("Add")
+                    .font(.title3)
+                    .frame(width: 200.0, height: 35)
+            }
+            
             
         }
         .frame(width: 100.0)
@@ -49,8 +75,8 @@ struct AddFriendView: View {
         .foregroundColor(.white)
         .padding(.bottom, 10)
         
+        
     }
-    
 }
 
 

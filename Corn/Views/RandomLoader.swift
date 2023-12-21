@@ -9,7 +9,10 @@ import SwiftUI
 
 struct RandomLoader: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ViewThatFits(in: /*@START_MENU_TOKEN@*/.horizontal/*@END_MENU_TOKEN@*/) {
+            LottieView(name: "loading", loopMode: .loop, contentMode: .scaleAspectFit)
+        }.frame(height:.infinity)
+
     }
 }
 

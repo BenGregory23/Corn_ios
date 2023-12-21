@@ -14,55 +14,114 @@ struct CardView: View {
     @EnvironmentObject var userViewModel: UserViewModel
     @State private var offset = CGSize.zero
     @State private var color = Color.gray
+    @State private var showingDetail = false
+    
+    @State private var isFlipped = false
     
     
     
     var body: some View {
         ZStack{
-          
+            
             GeometryReader { geometry in
                 AsyncImage(url: URL(string: AppConfig.tmdbImageURL + "/" + movie.poster)) { phase in
                     switch phase {
                     case .empty:
-                        // Placeholder view, you can use any view here
-                        Image("movie")
-                            .resizable()
-                            .frame(width: geometry.size.width, height: geometry.size.height)
-                            .clipShape(RoundedRectangle(cornerRadius: 10.0))
-                            .overlay {
-                                ZStack{
-                                  
-                                
-                                    RoundedRectangle(cornerRadius: 10.0).stroke(.white, lineWidth: 1)
-                                        .opacity(0.0)
-                                }
-                          
-                            }
-                            .shadow(radius: 7)
+                        
+                        PopcornLoader()
+                        
                     case .success(let image):
-                        image
-                            .resizable()
-                            .frame(width: geometry.size.width, height: geometry.size.height)
-                            .clipShape(RoundedRectangle(cornerRadius: 10.0))
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 10.0).stroke(color, lineWidth: 1)
-                                    .opacity(0.0)
+                        
+                        
+                        
+                         image
+                         .resizable()
+                         .frame(width: geometry.size.width, height: geometry.size.height)
+                         .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                         .overlay {
+                         RoundedRectangle(cornerRadius: 10.0).stroke(color, lineWidth: 1)
+                         .opacity(0.5)
+                         }
+                         .onTapGesture {
+                         showingDetail.toggle()
+                         
+                         }
+                         .shadow(radius: 7)
+                         .sheet(isPresented: $showingDetail, content: {
+                         MovieDetail(movie: movie)
+                         })
+                         
+                        
+                        // Card 3D rotation effect
+                        // bad opacity animation
+                        // we can see through the card for a brief moment
+                        
+                        /*
+                        ZStack {
+                            image
+                                .resizable()
+                                .frame(width: geometry.size.width, height: geometry.size.height)
+                                .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 10.0).stroke(color, lineWidth: 1)
+                                        .opacity(0.5)
+                                }
+                                .shadow(radius: 7)
+                                .opacity(isFlipped ? 0 : 1) // Hide when the card is not flipped
+                            
+                            // Back view: MovieDetail
+                               if isFlipped {
+                                   MovieDetail(movie: movie)
+                                       .rotation3DEffect(
+                                           .degrees(180),
+                                           axis: (x: 0, y: 1, z: 0)
+                                       )
+                                       .background(.darkGray)
+                                       .clipShape(RoundedRectangle(cornerRadius: 10.0)) // Clipping mask here
+                                       
+                               }
+                        }
+                        .rotation3DEffect(
+                            .degrees(isFlipped ? 180 : 0),
+                            axis: (x: 0, y: 1, z: 0)
+                        )
+                        .onTapGesture {
+                            withAnimation {
+                                isFlipped.toggle()
                             }
-                            .shadow(radius: 7)
+                        }
+                         */
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                     case .failure:
                         // Placeholder view for when the image fails to load
-                        Image(systemName: "exclamationmark.triangle")
+                        Image(systemName: "exclamationmark.triangle").onAppear{
+                            movieViewModel.fetchRandomMovies()
+                        }
+                        
+                        
+                        
                     @unknown default:
                         // Placeholder view for unknown state
                         Image(systemName: "questionmark.diamond")
                     }
                 }
             }
-
-           
-           
             
-          
+            
+            
+            
+            
             
         }
         .offset(x: offset.width, y: offset.height * 0.4)
@@ -82,10 +141,10 @@ struct CardView: View {
     func swipeCard(width: CGFloat){
         switch width {
         case -500...(-150):
-            print("Movie removed")
+       
             offset = CGSize(width: -500, height: 0)
         case 150...500:
-           addMovie()
+            addMovie()
             offset = CGSize(width: 500, height: 0)
         default:
             offset = .zero
@@ -101,7 +160,7 @@ struct CardView: View {
         default:
             color = .gray
         }
-            
+        
     }
     
     func addMovie(){

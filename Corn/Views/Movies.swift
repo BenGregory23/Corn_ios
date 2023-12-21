@@ -16,13 +16,30 @@ struct Movies: View {
         NavigationSplitView {
             if userViewModel.movies.isEmpty {
                 VStack {
-                    LottieView(name: "popcorn")
-                    Text("Swipe some movies!")
-                        .bold()
-                        .font(.title2)
+                    
+                
+                    
+                    if(userViewModel.networkErrors.moviesError){
+                        Text("There was an error.")
+                            .bold()
+                            .font(.title2)
+                        Text("Check your internet connection.")
+                        
+                        Button("Retry") {
+                            userViewModel.reloadData()
+                        }
+                    }else{
+                        LottieView(name: "popcorn")
+                        Text("There is nothing here.")
+                            .bold()
+                            .font(.title2)
+                        Text("Swipe some movies!")
+                    }
+                   
                 }
                 .frame(width: 300, height: 200)
                 .navigationTitle("Movies")
+                
             } else {
                 List {
                     ForEach(userViewModel.movies.reversed().filter {
@@ -38,6 +55,10 @@ struct Movies: View {
                 }
                 .searchable(text: $searchValue)
                 .navigationTitle("Movies")
+                .refreshable {
+                    userViewModel.fetchUserMovies()
+                }
+                
             }
         } detail: {
             Text("Select a movie")
@@ -49,6 +70,7 @@ struct Movies: View {
             for index in offsets {
                 let reversedIndex = userViewModel.movies.count - 1 - index
                 let movieToRemove = userViewModel.movies[reversedIndex]
+                userViewModel.movies.remove(at: reversedIndex)
                 userViewModel.removeMovie(movie: movieToRemove)
             }
         }

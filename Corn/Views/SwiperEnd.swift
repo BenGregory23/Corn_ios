@@ -68,7 +68,7 @@ struct SwiperEnd: View {
         .onChange(of: selectedMessageIndex) { newValue, _ in
             // Do any additional logic you need when selectedMessageIndex changes
         }
-        .frame(width: 300, height: 500)
+        .frame(maxHeight: .infinity)
         .background(.black)
         .padding()
     }

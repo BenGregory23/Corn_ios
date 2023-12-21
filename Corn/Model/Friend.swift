@@ -14,10 +14,11 @@ struct Friend: Hashable, Codable, Identifiable {
     var email: String
     var username: String
     var movies: [Movie]?
+    var profilePicture: String?
     
     // CodingKeys to map the JSON keys to Swift property names
     private enum CodingKeys: String, CodingKey {
-        case email, username
+        case email, username, profilePicture
         case id = "_id"
     }
 }

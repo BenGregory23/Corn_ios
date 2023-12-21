@@ -12,17 +12,25 @@ struct ProfileSummary: View {
     @EnvironmentObject var authenticationManager: AuthenticationManager
     @EnvironmentObject var userViewModel: UserViewModel
     @State private var showDisconnectedAlert = false
-  
+    @AppStorage("profile_picture") private var profilePicture = "char_0_3"
+    
     
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 10) {
                 HStack{
-                    Image("Neutral")
+                    
+                    Image("Profiles/" + profilePicture)
                         .resizable()
-                        .frame(width: 50,height: 50)
-                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                        .frame(width: 60,height: 60)
+                        .clipShape(Circle())
+                        .overlay(
+                            Circle()
+                                .stroke(Color.accentColor, lineWidth: 3)
+                            
+                        ).padding(3)
+                    
                     VStack(alignment: .leading){
                         Text(userViewModel.username)
                             .bold()
@@ -32,52 +40,36 @@ struct ProfileSummary: View {
                     }
                 }
                 
-                GroupBox(label: Text("Information")) {
+                
+                GroupBox{
                     VStack(alignment: .leading){
                         HStack{
                             Image(systemName: "movieclapper.fill")
+                                .frame(minWidth: 40)
                             Text(String(userViewModel.movies.count))
                                 .bold()
                                 .font(.title)
                             Text("Movie(s)")
                                 .font(.headline)
                                 .offset(y:3)
-                                
-                        }.frame(minWidth: 300)
+                        }
+                        
                         
                         HStack{
                             Image(systemName: "person.3.fill")
+                                .frame(minWidth: 40)
                             Text(String(userViewModel.friends.count))
                                 .bold()
                                 .font(.title)
                             Text("Friend(s)")
                                 .font(.headline)
                                 .offset(y:3)
-                        }.frame(minWidth: 300)
-                    }
-                 
-                    
-                }.padding(.vertical)
-                
-                GroupBox(label: Text("State of Development")) {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("The UI is coming together, and new features are in active development.")
-                            .font(.body)
-                        
-                        Text("We appreciate your feedback as we work to enhance the app.")
-                            .font(.body)
-                        
-                        Text("If you encounter any bugs or issues please report them.")
-                            .font(.body)
-                            .foregroundColor(.red) // Optionally, you can change the text color
-                        
-                        Text("Thank you for being a part of our app's development journey!")
-                            .font(.body)
-                    }
-                    .padding()
-                }
+                        }
+                    }.frame(maxWidth: .infinity, alignment: .leading)
+                }.frame(maxWidth: .infinity, alignment: .leading)
                 
                 
+                /*
                 Button("Disconnect") {
                     disconnect()
                 }
@@ -93,16 +85,28 @@ struct ProfileSummary: View {
                         },
                         secondaryButton: .cancel()
                     )
-                }
+                }*/
+                
+                Spacer(minLength: 300)
+                
+                VStack(alignment: .center){
+                    BuyCoffeeBtn()
+                    Text("If you want to support me you can !")
+                }.frame(maxWidth: .infinity)
+                
+                
+                
                 
             }
-        }
+        }.padding()
     }
     
     func disconnect(){
         UserDefaults.standard.set(false, forKey: "isUserConnected")
         UserDefaults.standard.removeObject(forKey: "userId")
         UserDefaults.standard.removeObject(forKey: "userEmail")
+        UserDefaults.standard.removeObject(forKey: "token")
+        UserDefaults.standard.removeObject(forKey: "username")
         showDisconnectedAlert = true
     }
 }

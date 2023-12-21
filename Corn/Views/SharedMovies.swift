@@ -22,7 +22,7 @@ struct SharedMovies: View {
            
             List(sharedMovies) { movie in
                 NavigationLink{
-                    MovieDetail(movie: movie)
+                    MovieDetail(movie: movie, shareable: true, friendId: friend.id)
                 } label: {
                     MovieRow(movie: movie)
                 }
@@ -57,8 +57,7 @@ struct SharedMovies: View {
                     self.sharedMovies = commonMovies
                 }
 
-                // Now 'commonMovies' contains the movies that are common between 'commonMovies' and 'friendMovies'
-                print(commonMovies)
+             
             case .failure(let error):
                 // Handle the error
                 print("Error: \(error)")
