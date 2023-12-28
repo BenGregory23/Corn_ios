@@ -31,6 +31,9 @@
         }
       }
     },
+    "All" : {
+
+    },
     "Already have an account? " : {
       "localizations" : {
         "fr" : {
@@ -130,6 +133,9 @@
           }
         }
       }
+    },
+    "Filter" : {
+
     },
     "Find your next movie!" : {
       "localizations" : {
@@ -243,6 +249,7 @@
       }
     },
     "Like" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -309,6 +316,9 @@
         }
       }
     },
+    "Notifications" : {
+
+    },
     "OK" : {
       "localizations" : {
         "fr" : {
@@ -339,6 +349,9 @@
         }
       }
     },
+    "Propose this movie to your friend" : {
+
+    },
     "Retry" : {
       "localizations" : {
         "fr" : {
@@ -360,6 +373,7 @@
       }
     },
     "Send a notification" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -380,6 +394,7 @@
       }
     },
     "Shared Movies" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -440,6 +455,7 @@
       }
     },
     "Swipe some movies!" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -450,6 +466,7 @@
       }
     },
     "There is nothing here." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

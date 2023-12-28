@@ -23,6 +23,8 @@ struct CardView: View {
     var body: some View {
         ZStack{
             
+           
+            
             GeometryReader { geometry in
                 AsyncImage(url: URL(string: AppConfig.tmdbImageURL + "/" + movie.poster)) { phase in
                     switch phase {
@@ -37,71 +39,20 @@ struct CardView: View {
                          image
                          .resizable()
                          .frame(width: geometry.size.width, height: geometry.size.height)
-                         .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                         .clipShape(RoundedRectangle(cornerRadius: 16.0))
                          .overlay {
-                         RoundedRectangle(cornerRadius: 10.0).stroke(color, lineWidth: 1)
+                         RoundedRectangle(cornerRadius: 16.0).stroke(color, lineWidth: 1)
                          .opacity(0.5)
                          }
                          .onTapGesture {
                          showingDetail.toggle()
                          
                          }
-                         .shadow(radius: 7)
+                         
                          .sheet(isPresented: $showingDetail, content: {
                          MovieDetail(movie: movie)
                          })
                          
-                        
-                        // Card 3D rotation effect
-                        // bad opacity animation
-                        // we can see through the card for a brief moment
-                        
-                        /*
-                        ZStack {
-                            image
-                                .resizable()
-                                .frame(width: geometry.size.width, height: geometry.size.height)
-                                .clipShape(RoundedRectangle(cornerRadius: 10.0))
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 10.0).stroke(color, lineWidth: 1)
-                                        .opacity(0.5)
-                                }
-                                .shadow(radius: 7)
-                                .opacity(isFlipped ? 0 : 1) // Hide when the card is not flipped
-                            
-                            // Back view: MovieDetail
-                               if isFlipped {
-                                   MovieDetail(movie: movie)
-                                       .rotation3DEffect(
-                                           .degrees(180),
-                                           axis: (x: 0, y: 1, z: 0)
-                                       )
-                                       .background(.darkGray)
-                                       .clipShape(RoundedRectangle(cornerRadius: 10.0)) // Clipping mask here
-                                       
-                               }
-                        }
-                        .rotation3DEffect(
-                            .degrees(isFlipped ? 180 : 0),
-                            axis: (x: 0, y: 1, z: 0)
-                        )
-                        .onTapGesture {
-                            withAnimation {
-                                isFlipped.toggle()
-                            }
-                        }
-                         */
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
                         
                     case .failure:
                         // Placeholder view for when the image fails to load
@@ -141,7 +92,8 @@ struct CardView: View {
     func swipeCard(width: CGFloat){
         switch width {
         case -500...(-150):
-       
+            discardMovie()
+            
             offset = CGSize(width: -500, height: 0)
         case 150...500:
             addMovie()
@@ -163,9 +115,18 @@ struct CardView: View {
         
     }
     
+    func discardMovie(){
+        // removing the last movie of the list will remove the most upper movie shown on the screen
+        movieViewModel.movies.removeLast()
+        if(movieViewModel.movies.count == 0){
+            movieViewModel.fetchRandomMovies()
+        }
+    }
+    
     func addMovie(){
         
         userViewModel.addMovie(movie: self.movie)
+        discardMovie()
     }
 }
 

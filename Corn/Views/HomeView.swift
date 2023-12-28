@@ -18,95 +18,101 @@ struct HomeView: View {
     
     
     var body: some View {
-        VStack {
-            HStack {
-                
-                Button {
-                    showingSettings.toggle()
-                } label: {
-                    Image(systemName: "gear")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 30, height: 30)
-                }
-                .sheet(isPresented: $showingSettings) {
-                    Settings()
-                }.padding(20)
-                
-                Spacer()
-                Button {
-                    showingProfile.toggle()
-                } label: {
+        ZStack{
+            CardBackgroundView()
+                .frame(maxHeight: .infinity)
+            VStack {
+                HStack {
                     
-                        if(profilePicture == ""){
-                            Image(systemName: "person.crop.circle")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 30, height: 30)
-                        }
-                        else {
-                            Image("Profiles/" + profilePicture)
-                                .resizable()
-                                .frame(width: 30,height: 30)
-                                .clipShape(Circle())
-                                .overlay(
-                                    Circle()
-                                        .stroke(Color.accentColor, lineWidth: 3)
-                                     
-                                    
-                                ).padding(3)
-                           
-                            
-                        }
-                }
-                .sheet(isPresented: $showingProfile) {
-                    ProfileHost()
-                }.padding(20)
-                   
-                
-                
-            }
-            
-            if(movieViewModel.networkErrors.movies){
-                GeometryReader { geometry in
-                    VStack {
-                        Spacer()
-                        
-                        Text("There was an error.")
-                            .bold()
-                            .font(.title2)
-                        Text("Check your internet connection.")
-                        
-                        Button("Retry") {
-                            movieViewModel.reloadData()
-                        }
-                        Spacer()
+                    Button {
+                        showingSettings.toggle()
+                    } label: {
+                        Image(systemName: "gear")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 30, height: 30)
                     }
-                    .frame(width: geometry.size.width, height: geometry.size.height)
-                }.background(.black)
-                
-                VStack{
+                    .sheet(isPresented: $showingSettings) {
+                        Settings()
+                    }.padding(20)
+                    
+                    Spacer()
+                    Button {
+                        showingProfile.toggle()
+                    } label: {
+                        
+                            if(profilePicture == ""){
+                                Image(systemName: "person.crop.circle")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 30, height: 30)
+                            }
+                            else {
+                                Image("Profiles/" + profilePicture)
+                                    .resizable()
+                                    .frame(width: 30,height: 30)
+                                    .clipShape(Circle())
+                                    .overlay(
+                                        Circle()
+                                            .stroke(Color.accentColor, lineWidth: 3)
+                                         
+                                        
+                                    ).padding(3)
+                               
+                                
+                            }
+                    }
+                    .sheet(isPresented: $showingProfile) {
+                        ProfileHost()
+                    }.padding(20)
+                       
+                    
                     
                 }
+                
+                if(movieViewModel.networkErrors.movies){
+                    GeometryReader { geometry in
+                        VStack {
+                            Spacer()
+                            
+                            Text("There was an error.")
+                                .bold()
+                                .font(.title2)
+                            Text("Check your internet connection.")
+                            
+                            Button("Retry") {
+                                movieViewModel.reloadData()
+                            }
+                            Spacer()
+                        }
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                    }.background(.black)
+                    
+                    VStack{
+                        
+                    }
+                   
+                }
+                else if(movieViewModel.loading) {
+                  
+                    
+                    PopcornLoader()
+                }
+                else {
+                    Swiper()
+                }
+                
+                
+                
+                Spacer().frame(height: 30)
+                
                
             }
-            else if(movieViewModel.loading) {
-              
-                
-                PopcornLoader()
-            }
-            else {
-                Swiper()
-            }
+            .padding()
             
-            
-            
-            Spacer().frame(height: 30)
-            
-           
         }
-        .padding()
-    }
+        }
+        
 }
 
 #Preview {

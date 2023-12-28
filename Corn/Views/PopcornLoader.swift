@@ -22,7 +22,7 @@ struct PopcornLoader: View {
                 Spacer()
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
-        }.background(.black)
+        }.background(.clear)
     }
 }
 

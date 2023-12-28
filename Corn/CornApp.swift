@@ -14,6 +14,7 @@ struct CornApp: App {
     @StateObject private var authenticationManager = AuthenticationManager()
     @StateObject private var movieViewModel = MovieViewModel()
     @StateObject private var userViewModel = UserViewModel()
+    @StateObject private var notificationViewModel = NotificationViewModel()
     @AppStorage("locale") private var locale = "en"
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
@@ -26,6 +27,7 @@ struct CornApp: App {
                 .environmentObject(authenticationManager)
                 .environmentObject(movieViewModel)
                 .environmentObject(userViewModel)
+                .environmentObject(notificationViewModel)
                 .environment(\.locale, .init(identifier: locale))
                 .preferredColorScheme(.dark)
                 .onAppear{

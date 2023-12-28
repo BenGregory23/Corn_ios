@@ -30,7 +30,7 @@ struct SmallCards: View {
     
     var body: some View {
         ZStack{
-            Image("movie")
+            Image("walle")
                 .resizable()
                 .frame(width: 200, height: 300)
                 .clipShape(RoundedRectangle(cornerRadius: 10.0))

@@ -6,3 +6,16 @@
 //
 
 import Foundation
+
+
+enum TagsEnum: String, Codable {
+    case love
+    case wantToWatch
+    case none
+
+    enum CodingKeys: String, CodingKey {
+        case love
+        case wantToWatch
+        case none
+    }
+}

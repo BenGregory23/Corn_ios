@@ -8,9 +8,13 @@
 import SwiftUI
 
 
+
+
+
 struct ProfileSummary: View {
     @EnvironmentObject var authenticationManager: AuthenticationManager
     @EnvironmentObject var userViewModel: UserViewModel
+    @EnvironmentObject var notificationViewModel : NotificationViewModel
     @State private var showDisconnectedAlert = false
     @AppStorage("profile_picture") private var profilePicture = "char_0_3"
     
@@ -41,6 +45,8 @@ struct ProfileSummary: View {
                 }
                 
                 
+                
+                
                 GroupBox{
                     VStack(alignment: .leading){
                         HStack{
@@ -66,26 +72,40 @@ struct ProfileSummary: View {
                                 .offset(y:3)
                         }
                     }.frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    
+                    
                 }.frame(maxWidth: .infinity, alignment: .leading)
                 
+               
+                   
+               
+                List(notificationViewModel.notifications, id: \.self) { notification in
+                                HStack {
+                                    
+                                    Image(systemName: "bell") // Add an icon if desired
+                                    Text(notification.request.content.title)
+                                        .foregroundStyle(.white)
+                                    Spacer()
+                                }
+                            }
+                            .navigationTitle("Notifications")
+                            .onAppear{
+                               
+                                
+                                notificationViewModel.listDeliveredNotifications()
+                            }
+                            
                 
-                /*
-                Button("Disconnect") {
-                    disconnect()
-                }
-                .buttonStyle(.bordered)
-                .tint(.red)
-                .foregroundColor(.white)
-                .alert(isPresented: $showDisconnectedAlert) {
-                    Alert(
-                        title: Text("Disconnect"),
-                        message: Text("Are you sure you want to disconnect?"),
-                        primaryButton: .destructive(Text("Disconnect")) {
-                            authenticationManager.setAuthenticated(false)
-                        },
-                        secondaryButton: .cancel()
-                    )
-                }*/
+            
+                    
+                
+                
+                
+                
+                
+                
+            
                 
                 Spacer(minLength: 300)
                 

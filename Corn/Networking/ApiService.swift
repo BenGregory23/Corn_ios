@@ -529,6 +529,75 @@ class ApiService {
         }.resume()
     }
     
+    func setMovieTag(movieId: String, tag: TagsEnum, completion: @escaping (Result<Bool, Error>)-> Void){
+        guard let userId = UserDefaults.standard.string(forKey: "userId") else {
+            // If the user Id is not found
+            completion(.failure(CustomError.noUserId))
+            return
+        }
+        
+        guard let authToken = UserDefaults.standard.string(forKey: "token") else {
+            // If the token is not available, return an error
+            completion(.failure(CustomError.noAuthTokenAvailable))
+            return
+        }
+        
+        let apiUrl = AppConfig.backendURL + "/users/\(userId)/movies/\(movieId)/tag"
+        print(apiUrl)
+        
+        guard let url = URL(string: apiUrl) else {
+            completion(.failure(CustomError.invalidURL))
+            return
+        }
+        
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.addValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        struct MovieTag : Codable {
+            let tag: TagsEnum
+        }
+        
+        // Encode the movie object to JSON and set it as the request body
+        do {
+            let encoder = JSONEncoder()
+            
+           
+            let movieTag = MovieTag(tag: tag)
+            request.httpBody = try encoder.encode(movieTag)
+        } catch {
+            completion(.failure(error))
+            return
+        }
+        
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            // Check the HTTP status code to determine the success of the deletion
+            if let httpResponse = response as? HTTPURLResponse {
+                switch httpResponse.statusCode {
+                case 200:
+                    // Successful deletion (No Content)
+                    completion(.success(true))
+                default:
+                    // Handle other status codes
+                    let error = NSError(domain: "Invalid HTTP status code", code: httpResponse.statusCode, userInfo: nil)
+                    completion(.failure(error))
+                }
+            } else {
+                // Unexpected response format
+                let error = NSError(domain: "Invalid HTTP response", code: 0, userInfo: nil)
+                completion(.failure(error))
+            }
+        }.resume()
+    }
+    
     
     
     

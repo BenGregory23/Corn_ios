@@ -58,8 +58,16 @@ struct MovieRow: View {
                                 .bold()
                                 .font(.title3)
                                 .foregroundColor(.white)
-                            Text(String(movie.releaseDate ?? 0000))
-                                .foregroundColor(.white)
+                            HStack{
+                                Text(String(movie.releaseDate ?? 0000))
+                                    .foregroundColor(.white)
+                               
+                                Image(systemName: movie.tag == TagsEnum.love ?  "heart.fill" : movie.tag == TagsEnum.wantToWatch ? "eyes" : "square.slash")
+                                    .foregroundColor(movie.tag == TagsEnum.love ? .red : movie.tag == TagsEnum.wantToWatch ?  .white : .clear)
+                                
+                             
+                            }
+                     
                             
                         }.padding()
                     }

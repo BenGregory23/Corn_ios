@@ -15,7 +15,7 @@ struct Movie: Hashable, Codable, Identifiable {
     var poster: String
     var overview: String
     var uuid: UUID = UUID()
-    var tag: Tags?
+    var tag: TagsEnum?
     
     // CodingKeys to map the JSON keys to Swift property names
     private enum CodingKeys: String, CodingKey {
@@ -26,8 +26,4 @@ struct Movie: Hashable, Codable, Identifiable {
     }
 }
 
-enum Tags : Codable{
-    case like
-    case love
-    case wantToWatch
-}
+

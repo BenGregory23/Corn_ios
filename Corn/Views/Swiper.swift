@@ -16,9 +16,11 @@ struct Swiper: View {
     
     
     var body: some View {
-        VStack {
             ZStack {
+                
+               
                     ForEach(movieViewModel.movies) { movie in
+                        
                         CardView(movie: movie)
                     }
                     
@@ -26,7 +28,7 @@ struct Swiper: View {
                         .zIndex(-1)
             }
             
-        }
+        
     }
 }
 

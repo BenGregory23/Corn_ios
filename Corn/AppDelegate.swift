@@ -33,4 +33,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Handle failure to register for remote notifications
         // ...
     }
+    
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+            // Handle notifications when the app is in the foreground
+            completionHandler([.banner, .sound, .badge])
+        }
+        
+        func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+            // Handle user's interaction with notifications here
+            completionHandler()
+        }
 }

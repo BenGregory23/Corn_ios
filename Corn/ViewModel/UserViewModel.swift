@@ -10,6 +10,7 @@ import Foundation
 class UserViewModel: ObservableObject {
     @Published var movies: [Movie] = []
     @Published var friends: [Friend] = []
+    @Published var notifications: [Notification] = []
     @Published var id: String = ""
     @Published var email: String = ""
     @Published var username: String = ""
@@ -203,7 +204,7 @@ class UserViewModel: ObservableObject {
     
     
     func proposeMovie(movie: Movie, forFriendId: String, completion: @escaping (Result<Bool, Error>) -> Void){
-        ApiServiceNotifications.shared.proposeMovieNotification(forFriendId: forFriendId, fromUserId: self.id, movieName: movie.title){ result in
+        ApiServiceNotifications.shared.proposeMovieNotification(forFriendId: forFriendId, fromUserId: self.id, movie: movie){ result in
             switch result {
             case .success(_):
                 completion(.success(true))
@@ -212,6 +213,24 @@ class UserViewModel: ObservableObject {
             }
         }
     }
+    
+    func setMovieTag(movie: Movie, tag: TagsEnum,completion: @escaping (Result<Bool, Error>)->Void){
+        
+        ApiService.shared.setMovieTag(movieId: movie.id, tag: tag) { result in
+            switch result {
+            case .success(_):
+                completion(.success(true))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func getMovieTag(){
+        // todo if needed later
+    }
+    
+    
     
     
     func reloadData(){

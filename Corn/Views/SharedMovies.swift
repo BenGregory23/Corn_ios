@@ -14,24 +14,50 @@ struct SharedMovies: View {
     var friend: Friend
     @State private var sharedMovies: [Movie] = []
     @State private var friendMovies: [Movie] = []
-
+    @State private var filterChoice: TagsEnum = TagsEnum.none
+    @State private var searchValue = ""
   
     
     var body: some View {
-       
-           
-            List(sharedMovies) { movie in
-                NavigationLink{
-                    MovieDetail(movie: movie, shareable: true, friendId: friend.id)
+        
+        List {
+            Picker("Filter", selection: $filterChoice) {
+                Text("All").tag(TagsEnum.none)
+                Image(systemName: "heart.fill").tag(TagsEnum.love)
+                    .foregroundColor(.red)
+                Image(systemName: "eyes").tag(TagsEnum.wantToWatch)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            
+            ForEach(sharedMovies.filter { movie in
+                let containsSearchValue = searchValue.isEmpty ? true : movie.title.localizedCaseInsensitiveContains(searchValue)
+                
+                switch filterChoice {
+                case TagsEnum.none:
+                    return containsSearchValue
+                case TagsEnum.love:
+                    return movie.tag == .love && containsSearchValue
+                case TagsEnum.wantToWatch:
+                    return movie.tag == .wantToWatch && containsSearchValue
+            
+                }
+            }, id: \.uuid) { movie in
+                NavigationLink {
+                    MovieDetail(movie: movie)
                 } label: {
                     MovieRow(movie: movie)
                 }
-               
             }
-            .navigationTitle("Shared Movies")
-            .onAppear {
-                getSharedMovies()
-            }
+          
+        }
+        .searchable(text: $searchValue)
+        .navigationTitle("Movies")
+        .refreshable {
+            userViewModel.fetchUserMovies()
+        }
+        .onAppear{
+            getSharedMovies()
+        }
         
     }
     
@@ -48,6 +74,7 @@ struct SharedMovies: View {
 
                 // Find common movies
                 commonMovies = commonMovies.filter { (movie: Movie) in
+                    
                     friendMovies.contains { (friendMovie: Movie) in
                         return friendMovie.idTmdb == movie.idTmdb
                     }

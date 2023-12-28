@@ -11,60 +11,53 @@ struct Movies: View {
     @Environment(ModelData.self) var modelData
     @EnvironmentObject var userViewModel: UserViewModel
     @State private var searchValue = ""
+    @State private var filterChoice: TagsEnum = TagsEnum.none
     
     var body: some View {
-        NavigationSplitView {
-            if userViewModel.movies.isEmpty {
-                VStack {
-                    
-                
-                    
-                    if(userViewModel.networkErrors.moviesError){
-                        Text("There was an error.")
-                            .bold()
-                            .font(.title2)
-                        Text("Check your internet connection.")
+            NavigationSplitView {
+                if userViewModel.movies.isEmpty {
+                    // ... (Your empty state view)
+                } else {
+                    List {
+                        Picker("Filter", selection: $filterChoice) {
+                            Text("All").tag(TagsEnum.none)
+                            Image(systemName: "heart.fill").tag(TagsEnum.love)
+                                .foregroundColor(.red)
+                            Image(systemName: "eyes").tag(TagsEnum.wantToWatch)
+                        }
+                        .pickerStyle(SegmentedPickerStyle())
                         
-                        Button("Retry") {
-                            userViewModel.reloadData()
+                        ForEach(userViewModel.movies.reversed().filter { movie in
+                            let containsSearchValue = searchValue.isEmpty ? true : movie.title.localizedCaseInsensitiveContains(searchValue)
+                            
+                            switch filterChoice {
+                            case TagsEnum.none:
+                                return containsSearchValue
+                            case TagsEnum.love:
+                                return movie.tag == .love && containsSearchValue
+                            case TagsEnum.wantToWatch:
+                                return movie.tag == .wantToWatch && containsSearchValue
+                        
+                            }
+                        }, id: \.uuid) { movie in
+                            NavigationLink {
+                                MovieDetail(movie: movie)
+                            } label: {
+                                MovieRow(movie: movie)
+                            }
                         }
-                    }else{
-                        LottieView(name: "popcorn")
-                        Text("There is nothing here.")
-                            .bold()
-                            .font(.title2)
-                        Text("Swipe some movies!")
+                        .onDelete(perform: deleteMovie)
                     }
-                   
-                }
-                .frame(width: 300, height: 200)
-                .navigationTitle("Movies")
-                
-            } else {
-                List {
-                    ForEach(userViewModel.movies.reversed().filter {
-                        searchValue.isEmpty ? true : $0.title.localizedCaseInsensitiveContains(searchValue)
-                    }, id: \.uuid) { movie in
-                        NavigationLink {
-                            MovieDetail(movie: movie)
-                        } label: {
-                            MovieRow(movie: movie)
-                        }
+                    .searchable(text: $searchValue)
+                    .navigationTitle("Movies")
+                    .refreshable {
+                        userViewModel.fetchUserMovies()
                     }
-                    .onDelete(perform: deleteMovie)
                 }
-                .searchable(text: $searchValue)
-                .navigationTitle("Movies")
-                .refreshable {
-                    userViewModel.fetchUserMovies()
-                }
-                
+            } detail: {
+                Text("Select a movie")
             }
-        } detail: {
-            Text("Select a movie")
         }
-    }
-    
     func deleteMovie(at offsets: IndexSet) {
         DispatchQueue.main.async {
             for index in offsets {
@@ -75,8 +68,6 @@ struct Movies: View {
             }
         }
     }
-
-    
 }
 
 #Preview {

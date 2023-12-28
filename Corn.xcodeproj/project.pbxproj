@@ -27,6 +27,10 @@
 		4C3409072B0ECC5F00267516 /* MovieDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3409062B0ECC5F00267516 /* MovieDetail.swift */; };
 		4C34090F2B0EE95A00267516 /* Swiper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C34090E2B0EE95A00267516 /* Swiper.swift */; };
 		4C3409192B0EF41A00267516 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3409182B0EF41A00267516 /* CardView.swift */; };
+		4C5BFB2C2B34FE7F00419450 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5BFB2B2B34FE7F00419450 /* Notification.swift */; };
+		4C5BFB2E2B35D11E00419450 /* TagsEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5BFB2D2B35D11E00419450 /* TagsEnum.swift */; };
+		4C5BFB302B35E18F00419450 /* NotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5BFB2F2B35E18F00419450 /* NotificationViewModel.swift */; };
+		4C5BFB322B3B44D000419450 /* CardBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5BFB312B3B44D000419450 /* CardBackgroundView.swift */; };
 		4C64238D2B2B893B009FD259 /* elody.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4C64238E2B2B893B009FD259 /* elody.otf */; };
 		4C6423902B2BB008009FD259 /* BlobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C64238F2B2BB008009FD259 /* BlobView.swift */; };
 		4C8551B12B126F6F00DDA186 /* MovieViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8551B02B126F6F00DDA186 /* MovieViewModel.swift */; };
@@ -88,6 +92,10 @@
 		4C3409062B0ECC5F00267516 /* MovieDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetail.swift; sourceTree = "<group>"; };
 		4C34090E2B0EE95A00267516 /* Swiper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swiper.swift; sourceTree = "<group>"; };
 		4C3409182B0EF41A00267516 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		4C5BFB2B2B34FE7F00419450 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		4C5BFB2D2B35D11E00419450 /* TagsEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsEnum.swift; sourceTree = "<group>"; };
+		4C5BFB2F2B35E18F00419450 /* NotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewModel.swift; sourceTree = "<group>"; };
+		4C5BFB312B3B44D000419450 /* CardBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardBackgroundView.swift; sourceTree = "<group>"; };
 		4C64238E2B2B893B009FD259 /* elody.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = elody.otf; sourceTree = "<group>"; };
 		4C64238F2B2BB008009FD259 /* BlobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlobView.swift; sourceTree = "<group>"; };
 		4C8551B02B126F6F00DDA186 /* MovieViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieViewModel.swift; sourceTree = "<group>"; };
@@ -216,6 +224,8 @@
 				4C28F2732B0D7F2100C2447E /* ModelData.swift */,
 				4C28F26E2B0D7CAD00C2447E /* Movie.swift */,
 				4C28F27B2B0D809200C2447E /* Friend.swift */,
+				4C5BFB2B2B34FE7F00419450 /* Notification.swift */,
+				4C5BFB2D2B35D11E00419450 /* TagsEnum.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -246,6 +256,7 @@
 				4C34090E2B0EE95A00267516 /* Swiper.swift */,
 				4C3409182B0EF41A00267516 /* CardView.swift */,
 				4C8551B42B1365F700DDA186 /* SwiperEnd.swift */,
+				4C5BFB312B3B44D000419450 /* CardBackgroundView.swift */,
 			);
 			name = Swiper;
 			sourceTree = "<group>";
@@ -255,6 +266,7 @@
 			children = (
 				4C8551B02B126F6F00DDA186 /* MovieViewModel.swift */,
 				4C8551B22B129A9B00DDA186 /* UserViewModel.swift */,
+				4C5BFB2F2B35E18F00419450 /* NotificationViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -455,6 +467,7 @@
 			files = (
 				4C2626362B1B3E0900E40986 /* RandomLoader.swift in Sources */,
 				4C28F2612B0D710200C2447E /* ContentView.swift in Sources */,
+				4C5BFB322B3B44D000419450 /* CardBackgroundView.swift in Sources */,
 				4CB086262B2FC3ED008FA5FD /* ApiServiceNotifications.swift in Sources */,
 				4CB086242B2FBFAD008FA5FD /* AppDelegate.swift in Sources */,
 				4C28F2862B0D8CA200C2447E /* StartView.swift in Sources */,
@@ -470,6 +483,7 @@
 				4C3409072B0ECC5F00267516 /* MovieDetail.swift in Sources */,
 				4C28F27A2B0D807700C2447E /* FriendRow.swift in Sources */,
 				4CF06BD82B102E60001E59E0 /* ApiService.swift in Sources */,
+				4C5BFB302B35E18F00419450 /* NotificationViewModel.swift in Sources */,
 				4C8551B12B126F6F00DDA186 /* MovieViewModel.swift in Sources */,
 				4CF06BD12B100BD6001E59E0 /* SignInWithApple.swift in Sources */,
 				4C28F2822B0D876900C2447E /* SharedMovies.swift in Sources */,
@@ -489,6 +503,8 @@
 				4C8551B32B129A9B00DDA186 /* UserViewModel.swift in Sources */,
 				4C28F27C2B0D809200C2447E /* Friend.swift in Sources */,
 				4CD0F0622B1E845E00D4F86B /* PopcornLoader.swift in Sources */,
+				4C5BFB2E2B35D11E00419450 /* TagsEnum.swift in Sources */,
+				4C5BFB2C2B34FE7F00419450 /* Notification.swift in Sources */,
 				4C3409192B0EF41A00267516 /* CardView.swift in Sources */,
 				4CF06BC62B0FE6DD001E59E0 /* AddFriendView.swift in Sources */,
 				4C9D32EE2B0E0A4D005E9091 /* LottieView.swift in Sources */,

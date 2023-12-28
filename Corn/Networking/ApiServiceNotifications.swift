@@ -16,7 +16,7 @@ class ApiServiceNotifications{
         // TODO
     }
     
-    func proposeMovieNotification(forFriendId: String, fromUserId:String, movieName: String, completion: @escaping (Result<Bool, Error>)-> Void){
+    func proposeMovieNotification(forFriendId: String, fromUserId:String, movie: Movie, completion: @escaping (Result<Bool, Error>)-> Void){
         //TODO
         
         
@@ -25,7 +25,7 @@ class ApiServiceNotifications{
             return
         }
         
-        if(forFriendId == "" || movieName == ""){
+        if(forFriendId == ""){
             return
         }
         
@@ -42,6 +42,11 @@ class ApiServiceNotifications{
             return
         }
         
+        guard let usersname = UserDefaults.standard.string(forKey: "username") else {
+            completion(.failure(CustomError.noDataReceived))
+            return
+        }
+        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
@@ -52,12 +57,13 @@ class ApiServiceNotifications{
             let senderId: String
             let recipientId: String
             let message: String
+            let idTmdb: Int?
         }
        
         do {
             // Encode the movie object as JSON and set it as the request's body
             let encoder = JSONEncoder()
-            let notification = Notification(senderId: fromUserId, recipientId: forFriendId, message: "First Notification!")
+            let notification = Notification(senderId: fromUserId, recipientId: forFriendId, message: "\(usersname) wants to watch \(movie.title) with you!", idTmdb: movie.idTmdb)
             request.httpBody = try encoder.encode(notification)
         } catch {
             completion(.failure(error))

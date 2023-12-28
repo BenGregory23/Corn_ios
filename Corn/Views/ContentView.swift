@@ -11,6 +11,7 @@ import UserNotifications
 struct ContentView: View {
     @EnvironmentObject var authenticationManager: AuthenticationManager
     @EnvironmentObject var userViewModel: UserViewModel
+    @EnvironmentObject var notificationViewModel: NotificationViewModel
     @AppStorage("hasDoneOnboarding") var hasDoneOnboarding = false
     @State private var selection = 2
     @StateObject private var movieViewModel = MovieViewModel()
@@ -38,6 +39,7 @@ struct ContentView: View {
                             Label("Friends", systemImage: "person.3.fill")
                         }.tag(3)
                 }.onAppear{
+                    notificationViewModel.listDeliveredNotifications()
                     requestNotificationPermission();
                 }
                 
@@ -53,6 +55,10 @@ struct ContentView: View {
     }
     
     private func requestNotificationPermission() {
+        DispatchQueue.main.async {
+            UIApplication.shared.registerForRemoteNotifications()
+        }
+        
         UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .sound, .alert]) { granted, _ in
             if granted {
                 DispatchQueue.main.async {
